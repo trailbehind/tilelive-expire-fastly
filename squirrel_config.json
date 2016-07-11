@@ -1,0 +1,6 @@
+{
+  "topo": {
+    "source": "tmstyle:///Users/athissen/Documents/GaiaGps/tm2-projects-private/gaia_topo.tm2",
+    "destination": "file:///Users/athissen/Documents/GaiaGps/squirrel-tiles?filetype=pbf"
+	} 
+} 
