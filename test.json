@@ -1,0 +1,7 @@
+{
+"source": "tmstyle:///home/ubuntu/tm2-projects-private/gaia_topo.tm2/",
+"fastlyApiKey": "XXX",
+"host": "myfastlydistribution.example.com",
+"surrogateKeyTemplate": "z{{zoom}}/x{{x}}/y{{y}}"
+}
+

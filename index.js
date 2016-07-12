@@ -3,33 +3,39 @@ var tilelive = require("tilelive"),
 	fs = require('fs'), 
 	request = require("request");
 
+// def of debug and error 
 var debug = require("debug")("tilelive-expire-fastly"),
-	error = require("debug")("tilelive-expire-fastly:error"); 
+ 	error = require("debug")("tilelive-expire-fastly:error"); 
 
 // Available from outside the module 
 module.exports = ExpireFastly; 
 
+// Some tests
+var uri = 'test.json'; 
+ExpireFastly(uri, function(){
+	console.log("done"); 
+}); 
+
 function ExpireFastly(uri, callback) { 
 	// reads the json file 
-	fs.readFile(json_path, 'utf8', function(err,data){
+	fs.readFile(uri, 'utf8', function(err,data){
 		if(err){
 			error("Error : " + err); 
 			callback(err);  
-		}
-		data = JSON.parse(data); 
-	});
-	// Get the info to purge the fastly cache
-	this._source = data.source; 
-	this._host = data.host; 
-	this._fastly_api_key = data.fastlyApiKey;  
-	this._surrogate_key = data.surrogateKeyTemplate; 
+		} else { 
+			data = JSON.parse(data); 
+			} 
+		// Get the info to purge the fastly cache
+		this._source = data.source; 
+		this._host = data.host; 
+		this._fastly_api_key = data.fastlyApiKey;  
+		this._surrogate_key = data.surrogateKeyTemplate;
 
-	// Successful operation and return "this" 
-	callback(null, this); 
-
+		// Successful operation and return "this" 
+		callback(null, this); 
+	}); 
 	// In case the callback is not called - returns undefined 
 	return undefined; 
- 
 }
 
 // Register protocols with tilelive 
@@ -40,8 +46,14 @@ ExpireFastly.registerProtocols = function(tilelive) {
 // When a tile gets updated (putTile function) : need to remove the old one from the cache
 ExpireFastly.prototype.putTile = function(z, x, y, data, callback){
 
-	var surrogate_key = this._surrogate_key; // TO DO : need to check the format 
-	var api_key = this.api_key; 
+	var surrogate_key_pattern = this._surrogate_key, // z{{zoom}}/x{{x}}/y{{y}}
+		api_key = this._fastly_api_key; 
+
+	var surrogate_key = surrogate_key_pattern
+		.replace("{{zoom}}", z)
+		.replace("{{x}}", x)
+		.replace("{{y}}", y); 
+
 	this._expire_tile_from_fastly(surrogate_key, api_key, 
 		function(err,data){
 			if(err){ 
@@ -57,24 +69,23 @@ ExpireFastly.prototype.putTile = function(z, x, y, data, callback){
 // TO DO : All the others calls gets just forwarded 
 
 ExpireFastly.prototype._expire_tile_from_fastly = function(surrogate_key, api_key, callback){
-	// Function to fire an http request to purge the tile 
-	var service_id = ""; 
-	var content = {"Fastly-Key":api_key, "Accept":"application/json"}; 
-	
+ 	// Function to fire an http request to purge the tile 
+	var service_id = "", // Got it with a Fastly account 
+		content = {"Fastly-Key":api_key, "Accept":"application/json"};
+		
 	request({
-    	url: "https://api.fastly.com/service/" + service_id + "/purge/" + surrogate_key,
-    	method: "POST",
-    	json: true,   
-    	body: content
+		url: "https://api.fastly.com/service/" + service_id + "/purge/" + surrogate_key,
+		method: "POST",
+		json: true,   
+		body: content
 		}, 
 		function (err, response, body){
-    		if(err){
-    			error("Error to post : " + body + "because " + err);
-    			callback(err); 
-    		} else { 
-    			console.log(response);
-    			callback(null); 
-    		}
+			if(err){
+				console.log("Error to post : " + body + "because " + err);
+				callback(err); 
+			} else { 
+				console.log(response);
+				callback(null); 
+			}
 	});
-
 }
