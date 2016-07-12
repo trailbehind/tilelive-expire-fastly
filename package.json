@@ -1,0 +1,20 @@
+{
+  "name": "tilelive-expire-fastly",
+  "version": "1.0.0",
+  "description": "Tilelive module for expiring tiles from fastly cdn when a tile is updated",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trailbehind/tilelive-expire-fastly.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trailbehind/tilelive-expire-fastly/issues"
+  },
+  "homepage": "https://github.com/trailbehind/tilelive-expire-fastly#readme"
+}
