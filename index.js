@@ -13,8 +13,8 @@ function ExpireFastly(uri, callback) {
 	// reads the json file 
 	fs.readFile(json_path, 'utf8', function(err,data){
 		if(err){
-			console.log("Error : " + err); 
-			return; 
+			error("Error : " + err); 
+			callback(err);  
 		}
 		data = JSON.parse(data); 
 	});
@@ -37,7 +37,7 @@ ExpireFastly.registerProtocols = function(tilelive) {
     tilelive.protocols['expire_fastly:'] = ExpireFastly;
 };
 
-// putTile 
+// When a tile gets updated (putTile function) : need to remove the old one from the cache
 ExpireFastly.prototype.putTile = function(z, x, y, data, callback){
 
 	var surrogate_key = this._surrogate_key; // TO DO : need to check the format 
@@ -55,7 +55,6 @@ ExpireFastly.prototype.putTile = function(z, x, y, data, callback){
 }
 
 // TO DO : All the others calls gets just forwarded 
-
 
 ExpireFastly.prototype._expire_tile_from_fastly = function(surrogate_key, api_key, callback){
 	// Function to fire an http request to purge the tile 
