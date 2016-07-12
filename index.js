@@ -3,6 +3,9 @@ var tilelive = require("tilelive"),
 	fs = require('fs'), 
 	request = require("request");
 
+var debug = require("debug")("tilelive-expire-fastly"),
+	error = require("debug")("tilelive-expire-fastly:error"); 
+
 // Available from outside the module 
 module.exports = ExpireFastly; 
 
@@ -56,14 +59,23 @@ ExpireFastly.prototype.putTile = function(z, x, y, data, callback){
 
 ExpireFastly.prototype._expire_tile_from_fastly = function(surrogate_key, api_key, callback){
 	// Function to fire an http request to purge the tile 
+	var service_id = ""; 
+	var content = {"Fastly-Key":api_key, "Accept":"application/json"}; 
+	
 	request({
-    	url: "https://api.fastly.com/",
+    	url: "https://api.fastly.com/service/" + service_id + "/purge/" + surrogate_key,
     	method: "POST",
     	json: true,   
-    	body: myJSONObject
+    	body: content
 		}, 
-		function (error, response, body){
-    		console.log(response);
+		function (err, response, body){
+    		if(err){
+    			error("Error to post : " + body + "because " + err);
+    			callback(err); 
+    		} else { 
+    			console.log(response);
+    			callback(null); 
+    		}
 	});
 
 }
