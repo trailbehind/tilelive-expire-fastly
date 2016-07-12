@@ -66,18 +66,17 @@ ExpireFastly.prototype.putTile = function(z, x, y, data, callback){
 	}); 
 }
 
-// TO DO : All the others calls gets just forwarded 
-
 ExpireFastly.prototype._expire_tile_from_fastly = function(surrogate_key, api_key, callback){
  	// Function to fire an http request to purge the tile 
 	var service_id = "", // Got it with a Fastly account 
 		content = {"Fastly-Key":api_key, "Accept":"application/json"};
+	var objJSON = JSON.stringify(content); 
 		
 	request({
 		url: "https://api.fastly.com/service/" + service_id + "/purge/" + surrogate_key,
 		method: "POST",
 		json: true,   
-		body: content
+		body: objJSON
 		}, 
 		function (err, response, body){
 			if(err){
@@ -88,4 +87,25 @@ ExpireFastly.prototype._expire_tile_from_fastly = function(surrogate_key, api_ke
 				callback(null); 
 			}
 	});
+}
+
+// Functions that get forwarded 
+ExpireFastly.prototype.getTile = function(z, x, y, callback){ 
+	callback(null);
+}
+
+ExpireFastly.prototype.getInfo = function(callback){ 
+	callback(null);
+}
+
+ExpireFastly.prototype.startWriting = function(callback){ 
+	callback(null);
+}
+
+ExpireFastly.prototype.stopWriting = function(callback){ 
+	callback(null);
+}
+
+ExpireFastly.prototype.putInfo = function(info, callback){ 
+	callback(null);
 }
