@@ -3,6 +3,8 @@ Tilelive module for expiring tiles from fastly cdn when a tile is updated
 
 ## Usage
 
+config-file for tile-squirrel looks like : 
+
 ```json 
 {
  	"topo": {
