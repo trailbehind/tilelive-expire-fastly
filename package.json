@@ -2,7 +2,7 @@
   "name": "tilelive-expire-fastly",
   "version": "1.0.0",
   "description": "Tilelive module for expiring tiles from fastly cdn when a tile is updated",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
