@@ -1,0 +1,6 @@
+{
+  "topo": {
+    "source": "tmstyle:///Users/athissen/Documents/GaiaGps/tm2-projects-private/gaia_topo.tm2",
+    "destination": "expire:///Users/athissen/node_modules/tilelive-expire-fastly/test/expireFastly.json"
+	} 
+}

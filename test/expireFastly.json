@@ -1,0 +1,6 @@
+{
+"source": "file:///Users/athissen/Documents/GaiaGps/squirrel-tiles/",
+"fastlyApiKey": "123456789",
+"host": "https://api.fastly.com/",
+"surrogateKeyTemplate": "z{{zoom}}/x{{x}}/y{{y}}"
+}
