@@ -17,10 +17,25 @@
   },
   "keywords": [
     "tilelive",
-    "cdn"
+    "cdn",
+    "fastly"
   ],
+  "_npmUser": {
+    "name": "jessecrocker",
+    "email": "jesse@gaiagps.com"
+  },
   "author": "Alexandre Thissen",
-  "license": "ISC",
+  "maintainers": [
+    {
+      "name": "Alexandre Thissen",
+      "email": "alex@gaiagps.com"
+    },
+    {
+      "name": "Jesse Crocker",
+      "email": "jesse@gaiagps.com"
+    }
+  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/trailbehind/tilelive-expire-fastly/issues"
   },
